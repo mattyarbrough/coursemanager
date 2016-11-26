@@ -77,32 +77,13 @@ class Category(models.Model):
         return self.category_name
 
 class Spot(models.Model):
-    course_id = models.ForeignKey('Course')
+    #the purchasable thing isn't the course, it's a spot in the course
+    course_slug = models.ForeignKey('Course')
     spot_name = models.CharField(max_length=100, blank=False, null=False)
     spot_price = models.DecimalField(max_digits=14, decimal_places=4, blank=True, null=True)
     spot_start = models.DateTimeField(blank=True, null=True) #spots go on sale
     spot_end = models.DateTimeField(blank=True, null=True) #sales end
+    spot_quantity = models.IntegerField(blank=False, null=False, default=1)
 
     class Meta:
         db_table = 'cm_spots'
-'''
-class Reservation(models.Model):
-    #basically building a cart system here, look into existing carts for functionality
-    #look at django-carton for this part
-    course_id = models.ForeignKey('Course')
-    person_id = models.BigIntegerField() #if signed in
-    reservation_spaces = models.IntegerField()
-    reservation_comment = models.TextField(blank=True, null=True)
-    reservation_date = models.DateTimeField()
-    reservation_status = models.IntegerField()
-    reservation_total = models.DecimalField(max_digits=14, decimal_places=4)
-    reservation_tax_rate = models.DecimalField(max_digits=7, decimal_places=4, blank=True, null=True)
-    reservation_taxes = models.DecimalField(max_digits=14, decimal_places=4, blank=True, null=True)
-    reservation_meta = models.TextField(blank=True, null=True)
-
-    class Meta:
-        managed = False
-        db_table = 'cm_reservations'
-
-
-'''
