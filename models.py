@@ -9,6 +9,11 @@ DOW = (('1', 'Sunday'),
       ('6', 'Friday'),
       ('7', 'Saturday'))
 
+Frequency = (('1', 'Weekly'),
+        ('2', 'Monthly'),
+        ('3', 'Bi-Weekly'),
+        ('4', 'Bi-Monthly'))
+
 class Course(models.Model):
     course_name = models.CharField(blank=False, null=False, max_length=250)
     course_slug = models.SlugField(unique=True)
@@ -31,14 +36,21 @@ class Course(models.Model):
     location_id = models.ForeignKey('Location')
     course_category_id = models.ForeignKey('Category')
     recurs = models.BooleanField(default=True)
-    recurs_interval = models.IntegerField(blank=True, null=True)
-    recurs_times = models.IntegerField(blank=True, null=True)
+    recurs_interval = models.CharField(max_length=1, choices=Frequency, default=1)
+    custom_recurs_times = models.IntegerField(blank=True, null=True)
+    #will use the recurs info to build calendar feed
 
     class Meta:
         db_table = 'cm_courses'
 
     def __str__(self):
         return self.course_name
+
+class CourseImage(models.Model):
+    course_image = models.ImageField()
+
+    def _str__(self):
+        return self.courseimage_id
 
 class Session(models.Model):
     session_name = models.CharField(blank=False, null=False, max_length=250)
